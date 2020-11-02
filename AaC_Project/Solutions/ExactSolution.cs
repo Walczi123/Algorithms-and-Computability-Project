@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Algorithms_and_Computability_Project.Solutions
@@ -6,13 +7,13 @@ namespace Algorithms_and_Computability_Project.Solutions
 {
     static class ExactSolution
     {
-        public static void Run(HashSet<int> set, int r)
+        public static void Run(List<int> set, int r)
         {
             if (set.Count >= r)
             {
                 var allSubsets = AllSubsets(set.Clone(), r);
                 int minWeight = int.MaxValue;
-                List<HashSet<int>> bestSolution = null;
+                List<List<int>> bestSolution = null;
                 foreach (var list in allSubsets)
                 {
                     var weight = list.ComputeFitnessFunctions();
@@ -24,29 +25,30 @@ namespace Algorithms_and_Computability_Project.Solutions
                 }
                 System.Console.WriteLine("The best exact solution is");
                 bestSolution.Show();
+                System.Console.WriteLine("Fitness function: " + minWeight);
             }
             else
             {
                 System.Console.WriteLine("Number of partitions has to be greater then cardinality of set.");
             }
-
         }
-        public static List<List<HashSet<int>>> AllSubsets(HashSet<int> set, int r)
+
+        public static List<List<List<int>>> AllSubsets(List<int> set, int r)
         {
             if (r == 1)
-                return new List<List<HashSet<int>>>() { new List<HashSet<int>>() { set } };
+                return new List<List<List<int>>>() { new List<List<int>>() { set } };
             if (r == set.Count())
             {
-                var result = new List<HashSet<int>>();
+                var result = new List<List<int>>();
                 foreach (var element in set)
                 {
-                    result.Add(new HashSet<int>() { element });
+                    result.Add(new List<int>() { element });
                 }
-                return new List<List<HashSet<int>>>() { result };
+                return new List<List<List<int>>>() { result };
             }
             var a = set.RemoveFirst();
             var A = AllSubsets(set.Clone(), r);
-            var resultSubsets = new List<List<HashSet<int>>>();
+            var resultSubsets = new List<List<List<int>>>();
             foreach (var result in A)
             {
                 for (int i = 0; i < result.Count; i++)
@@ -56,16 +58,20 @@ namespace Algorithms_and_Computability_Project.Solutions
                     resultSubsets.Add(clonedSet);
                 }
             }
+            //A = null;
+            //GC.Collect();
             var B = AllSubsets(set.Clone(), r - 1);
             foreach (var element in B)
             {
                 var clonedSet = element.Clone();
-                clonedSet.Add(new HashSet<int>() { a });
+                clonedSet.Add(new List<int>() { a });
                 resultSubsets.Add(clonedSet);
             }
+            //B = null;
+            //GC.Collect();
             return resultSubsets;
         }
-        public static int ComputeFitnessFunctions(this List<HashSet<int>> list)
+        public static int ComputeFitnessFunctions(this List<List<int>> list)
         {
             var sums = list.Select(set => set.Sum());
             return sums.Max() - sums.Min();

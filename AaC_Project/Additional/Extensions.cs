@@ -16,9 +16,9 @@ namespace Algorithms_and_Computability_Project
             return item;
         }
 
-        public static List<HashSet<int>> Clone(this List<HashSet<int>> listToClone)
+        public static List<List<int>> Clone(this List<List<int>> listToClone)
         {
-            var list = new List<HashSet<int>>();
+            var list = new List<List<int>>();
             foreach (var set in listToClone)
             {
                 list.Add(set.Clone());
@@ -26,9 +26,9 @@ namespace Algorithms_and_Computability_Project
             return list;
         }
 
-        public static HashSet<int> Clone(this HashSet<int> setToClone)
+        public static List<int> Clone(this List<int> setToClone)
         {
-            var set = new HashSet<int>();
+            var set = new List<int>();
             foreach (var element in setToClone)
             {
                 set.Add(element);
@@ -36,7 +36,7 @@ namespace Algorithms_and_Computability_Project
             return set;
         }
 
-        public static void Show(this List<List<HashSet<int>>> list)
+        public static void Show(this List<List<List<int>>> list)
         {
             foreach (var elements in list)
             {
@@ -44,7 +44,7 @@ namespace Algorithms_and_Computability_Project
             }
         }
 
-        public static void Show(this List<HashSet<int>> list)
+        public static void Show(this List<List<int>> list)
         {
             System.Console.Write("{");
             foreach (var elements in list)
@@ -54,6 +54,14 @@ namespace Algorithms_and_Computability_Project
                     System.Console.Write(element + " ");
                 System.Console.Write("} ");
             }
+            System.Console.Write("} \n");
+        }
+
+        public static void Show(this List<int> list)
+        {
+            System.Console.Write("{ ");
+            foreach (var element in list)
+                System.Console.Write(element + " ");
             System.Console.Write("} \n");
         }
     }
