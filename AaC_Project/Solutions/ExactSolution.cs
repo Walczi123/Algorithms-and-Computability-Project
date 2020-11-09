@@ -1,22 +1,39 @@
-﻿using System;
+﻿using AaC_Project.Additional;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Algorithms_and_Computability_Project.Solutions
-
 {
     static class ExactSolution
     {
-        public static void Run(List<int> set, int r)
+        public static void Run(InputData data)
         {
-            if (set.Count >= r)
+            System.Console.WriteLine($"ExactSolution for r={data.numberOfPartitions} cardinality of set is equal {data.initialSet.Count} and for {data.fitnessFuntion}");
+            var allSubsets = AllSubsets(data.initialSet, data.numberOfPartitions);         
+            List<List<int>> bestSolution = null;
+            if(data.fitnessFuntion == FitnessFunction.FirstFitnessFunction)
             {
-                var allSubsets = AllSubsets(set.Clone(), r);
                 int minWeight = int.MaxValue;
-                List<List<int>> bestSolution = null;
                 foreach (var list in allSubsets)
                 {
-                    var weight = list.ComputeFitnessFunctions();
+                    var weight = list.ComputeFirstFitnessFunctions();
+                    if (weight < minWeight)
+                    {
+                        minWeight = weight;
+                        bestSolution = list;
+                    }
+                }
+                System.Console.WriteLine("The best exact solution is");
+                bestSolution.Show();
+                System.Console.WriteLine("Fitness function rasult: " + minWeight);
+            }
+            else
+            {
+                double minWeight = Double.MaxValue;
+                foreach (var list in allSubsets)
+                {
+                    var weight = list.ComputeSecondFitnessFunctions();
                     if (weight < minWeight)
                     {
                         minWeight = weight;
@@ -26,10 +43,6 @@ namespace Algorithms_and_Computability_Project.Solutions
                 System.Console.WriteLine("The best exact solution is");
                 bestSolution.Show();
                 System.Console.WriteLine("Fitness function: " + minWeight);
-            }
-            else
-            {
-                System.Console.WriteLine("Number of partitions has to be greater then cardinality of set.");
             }
         }
 
@@ -58,8 +71,6 @@ namespace Algorithms_and_Computability_Project.Solutions
                     resultSubsets.Add(clonedSet);
                 }
             }
-            //A = null;
-            //GC.Collect();
             var B = AllSubsets(set.Clone(), r - 1);
             foreach (var element in B)
             {
@@ -67,14 +78,22 @@ namespace Algorithms_and_Computability_Project.Solutions
                 clonedSet.Add(new List<int>() { a });
                 resultSubsets.Add(clonedSet);
             }
-            //B = null;
-            //GC.Collect();
             return resultSubsets;
         }
-        public static int ComputeFitnessFunctions(this List<List<int>> list)
+        public static int ComputeFirstFitnessFunctions(this List<List<int>> list)
         {
-            var sums = list.Select(set => set.Sum());
+            var sums = list.Select(set => set.Sum()).ToList();
             return sums.Max() - sums.Min();
+        }
+
+        public static double ComputeSecondFitnessFunctions(this List<List<int>> list)
+        {
+            var sums = list.Select(set => set.Sum()).ToList();
+            double result = 0;
+            double average = (double)sums.Sum() / list.Count();
+            foreach (var sum in sums)
+                result += Math.Abs(sum - average);
+            return result;
         }
     }
 }

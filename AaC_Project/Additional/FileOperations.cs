@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AaC_Project.Additional;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,15 +8,22 @@ namespace Algorithms_and_Computability_Project.Additional
 {
     public static class FileOperations
     {
-        public static List<int> ReadSetFromFile(string localization)
+        public static List<InputData> ReadSetFromFile(string localization)
         {
             try
             {
-                using (var sr = new StreamReader(localization))
+                string[] lines = System.IO.File.ReadAllLines(localization);
+                int usersNumber = lines.Count() / 4;
+                List<InputData> result = new List<InputData>();
+                for (int i = 0; i < usersNumber; i++)
                 {
-                    var words = sr.ReadToEnd().Split(',');
-                    return new List<int>(words.Select(w => Int32.Parse(w)));
+                    var numberOfPartitions = lines[i * 4];
+                    var solition = lines[i * 4 + 1];
+                    var fitnessFuntion = lines[i * 4 + 2];
+                    var initialSet = lines[i * 4 + 3];
+                    result.Add(new InputData(numberOfPartitions, fitnessFuntion, solition, initialSet));
                 }
+                return result;
             }
             catch (IOException e)
             {

@@ -94,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Additional\FileOperations.cs" />
+    <Compile Include="Additional\InputData.cs" />
     <Compile Include="Solutions\ExactSolution.cs" />
     <Compile Include="Additional\Extensions.cs" />
     <Compile Include="Solutions\HeuristicSolution.cs" />
@@ -101,7 +102,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AaC_Project_TemporaryKey.pfx" />
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
