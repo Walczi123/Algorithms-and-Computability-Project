@@ -10,7 +10,7 @@ namespace Algorithms_and_Computability_Project.Solutions
         public static void Run(InputData data)
         {
             System.Console.WriteLine($"ExactSolution for r={data.numberOfPartitions} cardinality of set is equal {data.initialSet.Count} and for {data.fitnessFuntion}");
-            var allSubsets = AllSubsets(data.initialSet, data.numberOfPartitions);         
+            var allSubsets = AllSubsets(data.initialSet.Clone(), data.numberOfPartitions);         
             List<List<int>> bestSolution = null;
             if(data.fitnessFuntion == FitnessFunction.FirstFitnessFunction)
             {

@@ -32,5 +32,10 @@ namespace Algorithms_and_Computability_Project.Additional
             }
             return null;
         }
+
+        public static void SaveResultToFile(InputData data, double result)
+        {
+            File.AppendAllText(@"../../../Example/results.txt", $"{data.numberOfPartitions};{data.initialSet.Count};{data.solution};{data.fitnessFuntion};{result.ToString()}\n");
+        }
     }
 }

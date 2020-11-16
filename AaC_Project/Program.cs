@@ -47,6 +47,7 @@ namespace Algorithms_and_Computability_Project
                             HeuristicSolution.Run(data);
                         watch.Stop();
                         Console.WriteLine($"time in milisecond: {watch.Elapsed.TotalMilliseconds}");
+                        FileOperations.SaveResultToFile(data, watch.Elapsed.TotalMilliseconds);
                         System.Console.WriteLine("-------------");
                     }
                     else
