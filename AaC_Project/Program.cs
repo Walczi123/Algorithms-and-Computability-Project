@@ -20,7 +20,7 @@ namespace Algorithms_and_Computability_Project
                 }
                 List<InputData> inputdata = null;
                 if (x == "1")
-                    inputdata = FileOperations.ReadSetFromFile("../../../Example/set.txt");
+                    inputdata = FileOperations.ReadSetFromFile("./set.txt");
                 else
                 { 
                     inputdata = new List<InputData>();
@@ -34,25 +34,28 @@ namespace Algorithms_and_Computability_Project
                     }
                 }
                 var watch = new System.Diagnostics.Stopwatch();
-                foreach (var data in inputdata)
+                if (inputdata != null)
                 {
-                    if(data.numberOfPartitions <= data.initialSet.Count)
+                    foreach (var data in inputdata)
                     {
-                        watch.Reset();
-                        System.Console.WriteLine("-------------");
-                        watch.Start();
-                        if (data.solution == Solution.ExactSolution)
-                            ExactSolution.Run(data);
+                        if (data.numberOfPartitions <= data.initialSet.Count)
+                        {
+                            watch.Reset();
+                            System.Console.WriteLine("-------------");
+                            watch.Start();
+                            if (data.solution == Solution.ExactSolution)
+                                ExactSolution.Run(data);
+                            else
+                                HeuristicSolution.Run(data);
+                            watch.Stop();
+                            Console.WriteLine($"time in milisecond: {watch.Elapsed.TotalMilliseconds}");
+                            //FileOperations.SaveResultToFile(data, watch.Elapsed.TotalMilliseconds);
+                            System.Console.WriteLine("-------------");
+                        }
                         else
-                            HeuristicSolution.Run(data);
-                        watch.Stop();
-                        Console.WriteLine($"time in milisecond: {watch.Elapsed.TotalMilliseconds}");
-                        FileOperations.SaveResultToFile(data, watch.Elapsed.TotalMilliseconds);
-                        System.Console.WriteLine("-------------");
-                    }
-                    else
-                    {
-                        System.Console.WriteLine("Number of partitions has to be greater then cardinality of set.");
+                        {
+                            System.Console.WriteLine("Number of partitions has to be greater then cardinality of set.");
+                        }
                     }
                 }
             }
